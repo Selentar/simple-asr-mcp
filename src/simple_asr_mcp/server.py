@@ -3,6 +3,7 @@
 import logging
 import os
 import time
+from collections.abc import Iterable
 from pathlib import Path
 
 from faster_whisper import WhisperModel
@@ -57,7 +58,7 @@ def format_model_list(downloaded: set[str], default_model: str) -> str:
     return "\n".join(lines)
 
 
-def format_transcription(segments: list, info, model_name: str) -> str:
+def format_transcription(segments: Iterable, info, model_name: str) -> str:
     """Format transcription result as markdown-like text for LLMs."""
     seg_list = list(segments)
     full_text = " ".join(s.text.strip() for s in seg_list)
