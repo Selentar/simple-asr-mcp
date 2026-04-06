@@ -14,20 +14,17 @@ Or with pip:
 pip install simple-asr-mcp
 ```
 
+## Requirements
+
+- Python 3.10+
+- ffmpeg (required by faster-whisper for audio decoding)
+
 ## Usage
 
 ### Claude Code
 
-Add to `~/.claude/.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "asr": {
-      "command": "simple-asr-mcp"
-    }
-  }
-}
+```bash
+claude mcp add asr -- simple-asr-mcp
 ```
 
 Restart Claude Code. Then use:
@@ -47,19 +44,21 @@ Environment variables:
 
 Example with custom config:
 
-```json
-{
-  "mcpServers": {
-    "asr": {
-      "command": "simple-asr-mcp",
-      "env": {
-        "WHISPER_MODEL": "medium",
-        "WHISPER_DEVICE": "cuda"
-      }
-    }
-  }
-}
+```bash
+claude mcp add asr -e WHISPER_MODEL=medium -e WHISPER_DEVICE=cuda -- simple-asr-mcp
 ```
+
+### Available Models
+
+| Model | Size | RAM (est.) |
+|-------|------|------------|
+| tiny | 75 MB | ~1 GB |
+| base | 142 MB | ~1 GB |
+| small | 466 MB | ~2 GB |
+| medium | 1.5 GB | ~5 GB |
+| large-v3 | 3.1 GB | ~10 GB |
+
+The model is downloaded automatically on first use and cached locally. It stays in memory until the MCP server process exits.
 
 ## Supported Audio Formats
 
