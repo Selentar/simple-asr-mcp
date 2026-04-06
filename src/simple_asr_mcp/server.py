@@ -139,10 +139,13 @@ def main(argv: list[str] | None = None):
     import argparse
     import sys
 
+    from simple_asr_mcp import __version__
+
     parser = argparse.ArgumentParser(
         prog="simple-asr-mcp",
         description="Local speech recognition using faster-whisper",
     )
+    parser.add_argument("--version", "-v", action="version", version=f"simple-asr-mcp {__version__}")
     sub = parser.add_subparsers(dest="command")
 
     t = sub.add_parser("transcribe", help="Transcribe an audio file")

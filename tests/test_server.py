@@ -127,3 +127,23 @@ def test_cli_no_args_returns_none():
     with mock_patch("simple_asr_mcp.server.mcp") as mock_mcp:
         main([])
         mock_mcp.run.assert_called_once()
+
+
+def test_cli_version(capsys):
+    """CLI --version prints version string."""
+    from simple_asr_mcp.server import main
+    from simple_asr_mcp import __version__
+    with pytest.raises(SystemExit, match="0"):
+        main(["--version"])
+    captured = capsys.readouterr()
+    assert __version__ in captured.out
+
+
+def test_cli_help(capsys):
+    """CLI --help prints usage info."""
+    from simple_asr_mcp.server import main
+    with pytest.raises(SystemExit, match="0"):
+        main(["--help"])
+    captured = capsys.readouterr()
+    assert "transcribe" in captured.out
+    assert "models" in captured.out
