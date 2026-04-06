@@ -21,6 +21,12 @@ pip install simple-asr-mcp
 - Python 3.10+
 - ffmpeg (нужен faster-whisper для декодирования аудио)
 
+На Windows установите ffmpeg через [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/):
+
+```bash
+winget install Gyan.FFmpeg
+```
+
 ## Быстрая настройка (для агентов Claude Code)
 
 Выполните две команды — участие пользователя не требуется:
