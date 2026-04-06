@@ -86,6 +86,11 @@ The model is downloaded automatically on first use and cached locally. It stays 
 
 Any format supported by ffmpeg: wav, mp3, flac, ogg, m4a, wma, etc.
 
+## Links
+
+- [GitHub](https://github.com/Selentar/simple-asr-mcp)
+- [PyPI](https://pypi.org/project/simple-asr-mcp/)
+
 ## License
 
 MIT

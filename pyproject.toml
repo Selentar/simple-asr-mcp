@@ -24,6 +24,11 @@ dependencies = [
     "faster-whisper>=1.0.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/Selentar/simple-asr-mcp"
+Repository = "https://github.com/Selentar/simple-asr-mcp"
+Issues = "https://github.com/Selentar/simple-asr-mcp/issues"
+
 [project.scripts]
 simple-asr-mcp = "simple_asr_mcp.server:main"
 

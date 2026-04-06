@@ -86,6 +86,11 @@ claude mcp add asr --scope user -e WHISPER_MODEL=medium -e WHISPER_DEVICE=cuda -
 
 Любой формат, который поддерживает ffmpeg: wav, mp3, flac, ogg, m4a, wma и др.
 
+## Ссылки
+
+- [GitHub](https://github.com/Selentar/simple-asr-mcp)
+- [PyPI](https://pypi.org/project/simple-asr-mcp/)
+
 ## Лицензия
 
 MIT
