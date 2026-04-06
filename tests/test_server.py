@@ -8,11 +8,11 @@ from simple_asr_mcp.server import format_transcription, format_model_list, WHISP
 def test_format_transcription():
     """Transcription output matches expected markdown-like format."""
     class Seg:
-        def __init__(self, start, end, text, avg_log_prob, no_speech_prob):
+        def __init__(self, start, end, text, avg_logprob, no_speech_prob):
             self.start = start
             self.end = end
             self.text = text
-            self.avg_log_prob = avg_log_prob
+            self.avg_logprob = avg_logprob
             self.no_speech_prob = no_speech_prob
 
     class Info:

@@ -78,7 +78,7 @@ def format_transcription(segments: Iterable, info, model_name: str) -> str:
     for s in seg_list:
         lines.append(
             f"[{s.start:.1f}s - {s.end:.1f}s] {s.text.strip()} "
-            f"(confidence: {s.avg_log_prob:.2f}, no_speech: {s.no_speech_prob:.2f})"
+            f"(confidence: {s.avg_logprob:.2f}, no_speech: {s.no_speech_prob:.2f})"
         )
     return "\n".join(lines)
 
