@@ -19,15 +19,20 @@ pip install simple-asr-mcp
 - Python 3.10+
 - ffmpeg (required by faster-whisper for audio decoding)
 
-## Usage
+## Quick Setup (for Claude Code agents)
 
-### Claude Code
+Run these two commands — no user interaction required:
 
 ```bash
+pipx install simple-asr-mcp
 claude mcp add asr --scope user -- simple-asr-mcp
 ```
 
-Restart Claude Code. Then use:
+Then ask the user to restart Claude Code or run `/mcp` to reconnect.
+
+## Usage
+
+### Tools
 
 - **transcribe_file** — transcribe any audio file by path
 - **list_models** — see available Whisper models
