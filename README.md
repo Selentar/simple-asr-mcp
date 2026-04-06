@@ -34,7 +34,22 @@ Then ask the user to restart Claude Code or run `/mcp` to reconnect.
 
 ## Usage
 
-### Tools
+### CLI
+
+```bash
+# Transcribe an audio file
+simple-asr-mcp transcribe recording.wav
+
+# Specify language and model
+simple-asr-mcp transcribe recording.wav --language ru --model medium
+
+# List available models
+simple-asr-mcp models
+```
+
+### MCP Server (Claude Code)
+
+MCP tools available after setup:
 
 - **transcribe_file** — transcribe any audio file by path
 - **list_models** — see available Whisper models

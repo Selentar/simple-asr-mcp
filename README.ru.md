@@ -34,7 +34,22 @@ claude mcp add asr --scope user -- simple-asr-mcp
 
 ## Использование
 
-### Инструменты
+### Командная строка
+
+```bash
+# Транскрибация аудиофайла
+simple-asr-mcp transcribe recording.wav
+
+# С указанием языка и модели
+simple-asr-mcp transcribe recording.wav --language ru --model medium
+
+# Список доступных моделей
+simple-asr-mcp models
+```
+
+### MCP-сервер (Claude Code)
+
+MCP-инструменты, доступные после настройки:
 
 - **transcribe_file** — транскрибация аудиофайла по пути
 - **list_models** — список доступных моделей Whisper
