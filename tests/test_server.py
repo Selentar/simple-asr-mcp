@@ -84,3 +84,12 @@ def test_config_from_env():
         assert srv.DEFAULT_MODEL == "medium"
         assert srv.DEFAULT_DEVICE == "cuda"
         assert srv.DEFAULT_COMPUTE_TYPE == "float16"
+
+
+def test_server_has_tools():
+    """MCP server exposes transcribe_file and list_models tools."""
+    from simple_asr_mcp.server import mcp
+    # FastMCP stores tools in _tool_manager
+    tool_names = list(mcp._tool_manager._tools.keys())
+    assert "transcribe_file" in tool_names
+    assert "list_models" in tool_names

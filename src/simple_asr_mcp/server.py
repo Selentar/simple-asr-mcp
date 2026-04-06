@@ -6,8 +6,11 @@ import time
 from pathlib import Path
 
 from faster_whisper import WhisperModel
+from mcp.server.fastmcp import FastMCP
 
 logger = logging.getLogger("simple-asr-mcp")
+
+mcp = FastMCP("simple-asr-mcp")
 
 DEFAULT_MODEL = os.getenv("WHISPER_MODEL", "small")
 DEFAULT_DEVICE = os.getenv("WHISPER_DEVICE", "cpu")
@@ -92,3 +95,41 @@ def _get_model(model_name: str | None = None) -> WhisperModel:
     _model_name = name
     logger.info("Model loaded in %.1fs", time.time() - start)
     return _model
+
+
+@mcp.tool()
+def transcribe_file(file_path: str, language: str | None = None, model: str | None = None) -> str:
+    """Transcribe an audio file at the given path.
+
+    Supports any format that ffmpeg can decode (wav, mp3, flac, ogg, etc.).
+    Returns transcription with metadata and timestamped segments.
+
+    Args:
+        file_path: Path to the audio file.
+        language: Language code (e.g. "ru", "en"). None for auto-detect.
+        model: Whisper model name (e.g. "small", "medium"). None for default.
+    """
+    if not os.path.isfile(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+    try:
+        whisper = _get_model(model)
+        logger.info("Transcribing: %s", file_path)
+        segments, info = whisper.transcribe(file_path, language=language)
+        return format_transcription(segments, info, _model_name)
+    except FileNotFoundError:
+        raise
+    except Exception as e:
+        raise RuntimeError(f"Failed to transcribe: {e}") from e
+
+
+@mcp.tool()
+def list_models() -> str:
+    """List available Whisper models with sizes and download status."""
+    downloaded = _get_downloaded_models()
+    return format_model_list(downloaded, DEFAULT_MODEL)
+
+
+def main():
+    """Run the MCP server."""
+    logging.basicConfig(level=logging.INFO, format="%(name)s - %(message)s")
+    mcp.run()
