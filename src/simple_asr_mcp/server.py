@@ -3,6 +3,7 @@
 import logging
 import os
 import time
+from pathlib import Path
 
 from faster_whisper import WhisperModel
 
@@ -14,6 +15,43 @@ DEFAULT_COMPUTE_TYPE = os.getenv("WHISPER_COMPUTE_TYPE", "int8")
 
 _model: WhisperModel | None = None
 _model_name: str | None = None
+
+
+WHISPER_MODELS = [
+    {"name": "tiny", "size": "75 MB", "ram": "~1 GB"},
+    {"name": "base", "size": "142 MB", "ram": "~1 GB"},
+    {"name": "small", "size": "466 MB", "ram": "~2 GB"},
+    {"name": "medium", "size": "1.5 GB", "ram": "~5 GB"},
+    {"name": "large-v3", "size": "3.1 GB", "ram": "~10 GB"},
+]
+
+
+def _get_downloaded_models() -> set[str]:
+    """Check huggingface cache for downloaded faster-whisper models."""
+    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+    downloaded = set()
+    if cache_dir.exists():
+        for d in cache_dir.iterdir():
+            if d.is_dir() and d.name.startswith("models--Systran--faster-whisper-"):
+                model_name = d.name.split("faster-whisper-")[-1]
+                downloaded.add(model_name)
+    return downloaded
+
+
+def format_model_list(downloaded: set[str], default_model: str) -> str:
+    """Format model list as markdown table."""
+    lines = [
+        "## Available Whisper Models",
+        "",
+        "| Model | Size | RAM (est.) | Downloaded |",
+        "|-------|------|------------|------------|",
+    ]
+    for m in WHISPER_MODELS:
+        dl = "Yes" if m["name"] in downloaded else "No"
+        lines.append(f"| {m['name']} | {m['size']} | {m['ram']} | {dl} |")
+    lines.append("")
+    lines.append(f"Current default: {default_model}")
+    return "\n".join(lines)
 
 
 def format_transcription(segments: list, info, model_name: str) -> str:

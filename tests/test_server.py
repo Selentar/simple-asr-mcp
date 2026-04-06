@@ -1,7 +1,7 @@
 import os
 from unittest.mock import patch
 
-from simple_asr_mcp.server import format_transcription
+from simple_asr_mcp.server import format_transcription, format_model_list, WHISPER_MODELS
 
 
 def test_format_transcription():
@@ -49,6 +49,25 @@ def test_default_config():
         assert srv.DEFAULT_MODEL == "small"
         assert srv.DEFAULT_DEVICE == "cpu"
         assert srv.DEFAULT_COMPUTE_TYPE == "int8"
+
+
+def test_format_model_list():
+    """Model list output contains table with download status."""
+    result = format_model_list(downloaded={"small"}, default_model="small")
+    assert "## Available Whisper Models" in result
+    assert "| small" in result
+    assert "Yes" in result
+    assert "Current default: small" in result
+
+
+def test_whisper_models_has_expected_entries():
+    """All standard Whisper models are present."""
+    names = [m["name"] for m in WHISPER_MODELS]
+    assert "tiny" in names
+    assert "base" in names
+    assert "small" in names
+    assert "medium" in names
+    assert "large-v3" in names
 
 
 def test_config_from_env():
