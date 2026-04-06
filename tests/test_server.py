@@ -1,7 +1,8 @@
 import os
+import pytest
 from unittest.mock import patch
 
-from simple_asr_mcp.server import format_transcription, format_model_list, WHISPER_MODELS
+from simple_asr_mcp.server import format_transcription, format_model_list, WHISPER_MODELS, transcribe_file
 
 
 def test_format_transcription():
@@ -93,3 +94,9 @@ def test_server_has_tools():
     tool_names = list(mcp._tool_manager._tools.keys())
     assert "transcribe_file" in tool_names
     assert "list_models" in tool_names
+
+
+def test_transcribe_file_not_found():
+    """transcribe_file raises FileNotFoundError for missing file."""
+    with pytest.raises(FileNotFoundError, match="File not found"):
+        transcribe_file("/nonexistent/audio.wav")
