@@ -130,7 +130,39 @@ def list_models() -> str:
     return format_model_list(downloaded, DEFAULT_MODEL)
 
 
-def main():
-    """Run the MCP server."""
+def main(argv: list[str] | None = None):
+    """Run as CLI tool or MCP server.
+
+    If called with arguments, runs as CLI. Otherwise starts MCP server.
+    """
+    import argparse
+    import sys
+
+    parser = argparse.ArgumentParser(
+        prog="simple-asr-mcp",
+        description="Local speech recognition using faster-whisper",
+    )
+    sub = parser.add_subparsers(dest="command")
+
+    t = sub.add_parser("transcribe", help="Transcribe an audio file")
+    t.add_argument("file_path", help="Path to audio file")
+    t.add_argument("--language", "-l", default=None, help="Language code (e.g. ru, en)")
+    t.add_argument("--model", "-m", default=None, help="Whisper model name")
+
+    sub.add_parser("models", help="List available Whisper models")
+
+    args = parser.parse_args(argv if argv is not None else sys.argv[1:])
+
     logging.basicConfig(level=logging.INFO, format="%(name)s - %(message)s")
-    mcp.run()
+
+    if args.command == "transcribe":
+        try:
+            result = transcribe_file(args.file_path, args.language, args.model)
+            print(result)
+        except (FileNotFoundError, RuntimeError) as e:
+            print(str(e), file=sys.stderr)
+            sys.exit(1)
+    elif args.command == "models":
+        print(list_models())
+    else:
+        mcp.run()

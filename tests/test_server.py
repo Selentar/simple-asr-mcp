@@ -100,3 +100,30 @@ def test_transcribe_file_not_found():
     """transcribe_file raises FileNotFoundError for missing file."""
     with pytest.raises(FileNotFoundError, match="File not found"):
         transcribe_file("/nonexistent/audio.wav")
+
+
+def test_cli_transcribe_missing_file(capsys):
+    """CLI transcribe prints error for missing file."""
+    from simple_asr_mcp.server import main
+    with pytest.raises(SystemExit, match="1"):
+        main(["transcribe", "/nonexistent/audio.wav"])
+    captured = capsys.readouterr()
+    assert "File not found" in captured.err
+
+
+def test_cli_models(capsys):
+    """CLI models prints model list."""
+    from simple_asr_mcp.server import main
+    main(["models"])
+    captured = capsys.readouterr()
+    assert "Available Whisper Models" in captured.out
+    assert "small" in captured.out
+
+
+def test_cli_no_args_returns_none():
+    """main() with no args returns None (would start MCP server)."""
+    from simple_asr_mcp.server import main
+    from unittest.mock import patch as mock_patch
+    with mock_patch("simple_asr_mcp.server.mcp") as mock_mcp:
+        main([])
+        mock_mcp.run.assert_called_once()
