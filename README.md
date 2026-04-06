@@ -24,7 +24,7 @@ pip install simple-asr-mcp
 ### Claude Code
 
 ```bash
-claude mcp add asr -- simple-asr-mcp
+claude mcp add asr --scope user -- simple-asr-mcp
 ```
 
 Restart Claude Code. Then use:
@@ -45,7 +45,7 @@ Environment variables:
 Example with custom config:
 
 ```bash
-claude mcp add asr -e WHISPER_MODEL=medium -e WHISPER_DEVICE=cuda -- simple-asr-mcp
+claude mcp add asr --scope user -e WHISPER_MODEL=medium -e WHISPER_DEVICE=cuda -- simple-asr-mcp
 ```
 
 ### Available Models
