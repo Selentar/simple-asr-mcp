@@ -32,7 +32,8 @@ WHISPER_MODELS = [
 
 def _get_downloaded_models() -> set[str]:
     """Check huggingface cache for downloaded faster-whisper models."""
-    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+    from huggingface_hub import constants
+    cache_dir = Path(constants.HF_HUB_CACHE)
     downloaded = set()
     if cache_dir.exists():
         for d in cache_dir.iterdir():
